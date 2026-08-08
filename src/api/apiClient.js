@@ -1,5 +1,10 @@
 import axios from "axios";
 import { API_BASE_URL } from "../config/api";
+import NProgress from "nprogress";
+import "nprogress/nprogress.css";
+
+// Configure NProgress (optional, e.g. remove spinner)
+NProgress.configure({ showSpinner: false, speed: 400, minimum: 0.2 });
 
 const axiosInstance = axios.create({
   baseURL: API_BASE_URL,
@@ -8,13 +13,31 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   (config) => {
+    // Start loader on every request
+    NProgress.start();
     const token = localStorage.getItem("accessToken") || localStorage.getItem("token");
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
   },
-  (error) => Promise.reject(error)
+  (error) => {
+    NProgress.done();
+    return Promise.reject(error);
+  }
+);
+
+axiosInstance.interceptors.response.use(
+  (response) => {
+    // Complete loader on success
+    NProgress.done();
+    return response;
+  },
+  (error) => {
+    // Complete loader on error
+    NProgress.done();
+    return Promise.reject(error);
+  }
 );
 
 let isRefreshing = false;
@@ -100,16 +123,32 @@ export const apiRequest = async (url, options = {}) => {
 export const parseErrorMessage = (error) => {
   // Try to get message from backend response body
   const data = error.response?.data;
-  if (data) {
-    // Our error middleware sends: { statusCode, success, message, errors }
+
+  // Handle case where backend returns plain text or HTML (Express default)
+  if (typeof data === "string") {
+    const match = data.match(/Error:\s*([^<\n]+)/i);
+    if (match && match[1]) {
+      return match[1].trim();
+    }
+    if (data.length < 100 && !data.includes("<html")) {
+       return data.replace(/^Error:\s*/i, '').trim();
+    }
+  } else if (data) {
+    // 1. Check for specific error array (data.error or data.errors)
+    const errArray = Array.isArray(data.error) ? data.error : (Array.isArray(data.errors) ? data.errors : null);
+    if (errArray && errArray.length > 0) {
+      const msg = errArray[0];
+      return typeof msg === "string" ? msg.replace(/^Error:\s*/, '') : msg;
+    }
+    
+    // 2. Check if error is a string
+    if (typeof data.error === "string" && data.error.trim() !== "") {
+      return data.error.replace(/^Error:\s*/, '');
+    }
+
+    // 3. Fallback to generic message
     if (typeof data.message === "string" && data.message.trim() !== "") {
       return data.message;
-    }
-    if (typeof data.error === "string" && data.error.trim() !== "") {
-      return data.error;
-    }
-    if (Array.isArray(data.errors) && data.errors.length > 0) {
-      return data.errors[0];
     }
   }
   // Fallback: strip the ugly axios default message

@@ -19,4 +19,14 @@
   }
 }
 
+}
 
+/* NProgress Customization */
+#nprogress .bar {
+  background: #006A40 !important;
+  height: 3px !important;
+}
+
+#nprogress .peg {
+  box-shadow: 0 0 10px #006A40, 0 0 5px #006A40 !important;
+}
