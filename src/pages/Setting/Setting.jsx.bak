@@ -1,0 +1,520 @@
+import React, { useState } from "react";
+import "./Setting.css";
+import {
+  FiUser,
+  FiEdit3,
+  FiShield,
+  FiLock,
+  FiBell,
+  FiMoon,
+  FiGlobe,
+  FiHeart,
+  FiPhoneCall,
+  FiLink,
+  FiDatabase,
+  FiHelpCircle,
+  FiInfo,
+  FiSearch,
+  FiSun,
+  FiSmartphone,
+  FiClock,
+  FiLogOut,
+  FiTrash2,
+  FiDownload,
+  FiUpload,
+  FiCheckCircle,
+} from "react-icons/fi";
+import {
+  MdLocalPolice,
+  MdLocalHospital,
+  MdLocalFireDepartment,
+  MdOutlineHealthAndSafety,
+} from "react-icons/md";
+import { FaAmbulance } from "react-icons/fa";
+import { FcGoogle } from "react-icons/fc";
+import { BsFacebook, BsGithub, BsApple, BsMicrosoft } from "react-icons/bs";
+import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { toggleTheme } from "../../features/themeSlice";
+
+
+const NAV_ITEMS = [
+  { id: "account", label: "Account", icon: FiUser },
+  { id: "security", label: "Security", icon: FiShield },
+  { id: "privacy", label: "Privacy", icon: FiLock },
+  { id: "notifications", label: "Notifications", icon: FiBell },
+  { id: "appearance", label: "Appearance", icon: FiMoon },
+  { id: "language", label: "Language", icon: FiGlobe },
+  { id: "community", label: "Community Preferences", icon: FiHeart },
+  { id: "about", label: "About LocalVibe", icon: FiInfo },
+];
+
+const EMERGENCY_CONTACTS = [
+  { label: "Police", number: "100", icon: MdLocalPolice },
+  { label: "Hospital", number: "108", icon: MdLocalHospital },
+  { label: "Fire Station", number: "101", icon: MdLocalFireDepartment },
+  { label: "Ambulance", number: "102", icon: FaAmbulance },
+  { label: "Women's Helpline", number: "1091", icon: MdOutlineHealthAndSafety },
+  { label: "Disaster Management", number: "108", icon: MdLocalFireDepartment },
+];
+
+const CONNECTED_ACCOUNTS = [
+  { label: "Google", icon: FcGoogle, connected: true },
+  { label: "Facebook", icon: BsFacebook, connected: false },
+  { label: "GitHub", icon: BsGithub, connected: true },
+  { label: "Apple", icon: BsApple, connected: false },
+  { label: "Microsoft", icon: BsMicrosoft, connected: false },
+];
+
+const COMMUNITY_CATEGORIES = [
+  "Events", "Sports", "Education", "Technology", "Food", "Travel",
+  "Volunteer", "Marketplace", "Lost & Found", "Emergency", "Announcements", "News",
+];
+
+const Card = ({ title, subtitle, children, className = "" }) => (
+  <div className={`bg-white rounded-2xl border border-[#E2E8F0] shadow-[0_8px_24px_rgba(15,23,42,0.04)] p-6 ${className}`}>
+    {title && (
+      <div className="mb-4">
+        <h3 className="text-[#0F172A] text-base font-semibold">{title}</h3>
+        {subtitle && <p className="text-[#64748B] text-xs mt-1">{subtitle}</p>}
+      </div>
+    )}
+    {children}
+  </div>
+);
+
+const Toggle = ({ label, description, defaultChecked = true }) => {
+  const [on, setOn] = useState(defaultChecked);
+  return (
+    <div className="flex items-center justify-between py-3">
+      <div>
+        <p className="text-sm font-medium text-[#1E293B]">{label}</p>
+        {description && <p className="text-xs text-[#64748B] mt-0.5">{description}</p>}
+      </div>
+      <button
+        onClick={() => setOn(!on)}
+        className={`relative w-11 h-6 rounded-full shrink-0 transition-colors duration-[250ms] ${on ? "bg-[#006A40]" : "bg-[#E2E8F0]"
+          }`}
+      >
+        <span
+          className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform duration-[250ms] ${on ? "translate-x-5" : "translate-x-0"
+            }`}
+        />
+      </button>
+    </div>
+  );
+};
+
+const Field = ({ label, type = "text", defaultValue = "", placeholder = "" }) => (
+  <div className="flex flex-col gap-1.5">
+    <label className="text-xs font-medium text-[#64748B]">{label}</label>
+    <input
+      type={type}
+      defaultValue={defaultValue}
+      placeholder={placeholder}
+      className="w-full px-4 py-2.5 border border-[#E2E8F0] rounded-xl text-sm text-[#1E293B] outline-none transition duration-[250ms] focus:border-[#006A40] focus:shadow-[0_0_0_4px_rgba(0,106,64,0.1)]"
+    />
+  </div>
+);
+
+const AccountSection = () => (
+  <Card title="Account Settings" subtitle="Update your photo and personal details.">
+    <div className="flex items-center gap-4 mb-6">
+      <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#006A40] to-[#0F172A] flex items-center justify-center text-white text-xl font-bold">
+        MP
+      </div>
+      <div className="flex gap-2">
+        <button className="px-4 py-2 rounded-full bg-[#006A40] text-white text-xs font-semibold transition duration-[250ms] hover:bg-[#00532f]">
+          Upload Photo
+        </button>
+        <button className="px-4 py-2 rounded-full border border-[#E2E8F0] text-[#64748B] text-xs font-semibold transition duration-[250ms] hover:border-[#EF4444] hover:text-[#EF4444]">
+          Remove
+        </button>
+      </div>
+    </div>
+    <div className="grid sm:grid-cols-2 gap-4">
+      <Field label="Full Name" defaultValue="Manan Patel" />
+      <Field label="Username" defaultValue="manan_dev" />
+      <Field label="Email" type="email" defaultValue="manan@example.com" />
+      <Field label="Phone Number" defaultValue="+91 98765 43210" />
+      <Field label="Location" defaultValue="Ahmedabad, Gujarat" />
+    </div>
+    <div className="mt-4">
+      <label className="text-xs font-medium text-[#64748B]">Bio</label>
+      <textarea
+        rows={3}
+        defaultValue="Frontend developer building tools that bring neighbors closer together."
+        className="w-full mt-1.5 px-4 py-2.5 border border-[#E2E8F0] rounded-xl text-sm text-[#1E293B] outline-none resize-none transition duration-[250ms] focus:border-[#006A40] focus:shadow-[0_0_0_4px_rgba(0,106,64,0.1)]"
+      />
+    </div>
+    <div className="flex gap-3 mt-6">
+      <button className="px-6 py-2.5 rounded-full bg-[#006A40] text-white text-sm font-semibold transition duration-[250ms] hover:bg-[#00532f] hover:-translate-y-0.5">
+        Save Changes
+      </button>
+      <button className="px-6 py-2.5 rounded-full border border-[#E2E8F0] text-[#64748B] text-sm font-semibold transition duration-[250ms] hover:bg-[#F8FAFC]">
+        Cancel
+      </button>
+    </div>
+  </Card>
+);
+
+const SecuritySection = () => (
+  <div className="flex flex-col gap-4">
+    <Card title="Password">
+      <div className="flex gap-5">
+        <Link to="/Reset-Password" className="cursor-pointer">
+          <button className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#006A40] text-white text-sm font-semibold transition duration-[250ms] hover:bg-[#00532f]">
+            <FiLock size={15} /> Change Password
+          </button>
+        </Link>
+        <Link to="/Forget-Password" className="cursor-pointer">
+          <button className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#006A40] text-white text-sm font-semibold transition duration-[250ms] hover:bg-[#00532f]">
+            <FiLock size={15} /> Forget Password
+          </button>
+        </Link>
+      </div>
+    </Card>
+    <Card title="Two-Factor Authentication">
+      <Toggle label="Enable Two-Factor Authentication" description="Add an extra layer of security to your account." defaultChecked={false} />
+    </Card>
+    <Card title="Devices & Sessions">
+      <Toggle label="Login Alerts" description="Get notified when a new device logs in." />
+      <div className="border-t border-[#E2E8F0] pt-3 mt-1 flex flex-col gap-1.5">
+        <div className="flex items-center justify-between text-sm">
+          <span className="text-[#1E293B] flex items-center gap-2"><FiSmartphone size={15} className="text-[#64748B]" /> iPhone 15 — Ahmedabad</span>
+          <span className="text-xs text-[#16A34A] font-medium">Active now</span>
+        </div>
+        <div className="flex items-center justify-between text-sm">
+          <span className="text-[#1E293B] flex items-center gap-2"><FiClock size={15} className="text-[#64748B]" /> Chrome — Windows</span>
+          <span className="text-xs text-[#64748B]">2 days ago</span>
+        </div>
+      </div>
+      <div className="flex flex-wrap gap-3 mt-4">
+        <button className="px-4 py-2 rounded-full border border-[#E2E8F0] text-[#1E293B] text-xs font-semibold transition duration-[250ms] hover:border-[#006A40] hover:text-[#006A40]">
+          Manage Devices
+        </button>
+        <button className="px-4 py-2 rounded-full border border-[#E2E8F0] text-[#1E293B] text-xs font-semibold transition duration-[250ms] hover:border-[#006A40] hover:text-[#006A40]">
+          Recent Login Activity
+        </button>
+        <button className="px-4 py-2 rounded-full border border-[#EF4444]/30 text-[#EF4444] text-xs font-semibold transition duration-[250ms] hover:bg-[#EF4444] hover:text-white">
+          Logout From All Devices
+        </button>
+      </div>
+    </Card>
+    {/* <Card title="Session Timeout" subtitle="Automatically log out after a period of inactivity.">
+      <select className="w-full sm:w-64 px-4 py-2.5 border border-[#E2E8F0] rounded-xl text-sm text-[#1E293B] outline-none focus:border-[#006A40]">
+        <option>15 minutes</option>
+        <option>30 minutes</option>
+        <option defaultValue>1 hour</option>
+        <option>Never</option>
+      </select>
+    </Card> */}
+  </div>
+);
+
+const PrivacySection = () => (
+  <div className="flex flex-col gap-4">
+    <Card title="Profile Visibility">
+      <div className="flex flex-wrap gap-2">
+        {["Public", "Private"].map((v, i) => (
+          <label key={v} className="flex items-center gap-2 px-4 py-2 rounded-full border border-[#E2E8F0] text-sm text-[#1E293B] cursor-pointer transition duration-[250ms] has-[:checked]:border-[#006A40] has-[:checked]:bg-[#006A40]/5 has-[:checked]:text-[#006A40]">
+            <input type="radio" name="visibility" defaultChecked={i === 0} className="accent-[#006A40]" />
+            {v}
+          </label>
+        ))}
+      </div>
+    </Card>
+    <Card title="Privacy Controls">
+      <Toggle label="Public Profile" />
+      <Toggle label="Show Email" defaultChecked={false} />
+      <Toggle label="Show Phone Number" defaultChecked={false} />
+      <Toggle label="Show Address" defaultChecked={false} />
+      <Toggle label="Allow Direct Messages" />
+      <Toggle label="Show Community Activity" />
+      <Toggle label="Share Location" defaultChecked={false} />
+    </Card>
+  </div>
+);
+
+const NotificationsSection = () => (
+  <div className="grid sm:grid-cols-2 gap-4">
+    <Card title="Activity">
+      <Toggle label="Community Alerts" />
+      <Toggle label="Nearby Events" />
+      <Toggle label="Emergency Notifications" />
+      <Toggle label="Messages" />
+      <Toggle label="Friend Requests" />
+    </Card>
+    <Card title="Updates">
+      <Toggle label="Marketplace Updates" defaultChecked={false} />
+      <Toggle label="Volunteer Opportunities" />
+      <Toggle label="News Updates" defaultChecked={false} />
+      <Toggle label="Weekly Summary Email" />
+    </Card>
+    <Card title="Delivery Channels" className="sm:col-span-2">
+      <Toggle label="Push Notifications" />
+      <Toggle label="SMS Notifications" defaultChecked={false} />
+    </Card>
+  </div>
+);
+
+const AppearanceSection = () => (
+  <div className="flex flex-col gap-4">
+    <Card title="Theme">
+      <div className="grid grid-cols-3 gap-3">
+        {[
+          { label: "Light", icon: FiSun },
+          { label: "Dark", icon: FiMoon },
+          { label: "System", icon: FiSmartphone },
+        ].map(({ label, icon: Icon }, i) => (
+          <label
+            key={label}
+            className="flex flex-col items-center gap-2 p-4 rounded-xl border border-[#E2E8F0] cursor-pointer text-sm text-[#1E293B] transition duration-[250ms] has-[:checked]:border-[#006A40] has-[:checked]:bg-[#006A40]/5"
+          >
+            <input type="radio" name="theme" defaultChecked={i === 2} className="hidden" />
+            <Icon size={20} className="text-[#006A40]" />
+            {label}
+          </label>
+        ))}
+      </div>
+    </Card>
+    <Card title="Primary Color">
+      <div className="flex items-center gap-3">
+        <div className="w-10 h-10 rounded-full bg-[#006A40] ring-4 ring-[#006A40]/15" />
+        <span className="text-sm text-[#64748B]">#006A40</span>
+      </div>
+    </Card>
+    <Card title="Display">
+      <Toggle label="Compact Mode" defaultChecked={false} />
+      <Toggle label="Animations" />
+    </Card>
+  </div>
+);
+
+const LanguageSection = () => (
+  <Card title="Language & Region">
+    <div className="grid sm:grid-cols-2 gap-4">
+      {[
+        { label: "Language", options: ["English", "Hindi", "Gujarati"] },
+        { label: "Country", options: ["India", "United States", "United Kingdom"] },
+        { label: "Time Zone", options: ["GMT+5:30 (India Standard Time)", "GMT+0 (UTC)"] },
+        { label: "Date Format", options: ["DD/MM/YYYY", "MM/DD/YYYY", "YYYY-MM-DD"] },
+        { label: "Time Format", options: ["12-hour", "24-hour"] },
+        { label: "Measurement Units", options: ["Metric (km, kg)", "Imperial (mi, lb)"] },
+      ].map(({ label, options }) => (
+        <div key={label} className="flex flex-col gap-1.5">
+          <label className="text-xs font-medium text-[#64748B]">{label}</label>
+          <select className="px-4 py-2.5 border border-[#E2E8F0] rounded-xl text-sm text-[#1E293B] outline-none focus:border-[#006A40]">
+            {options.map((o) => (
+              <option key={o}>{o}</option>
+            ))}
+          </select>
+        </div>
+      ))}
+    </div>
+  </Card>
+);
+
+const CommunitySection = () => (
+  <div className="flex flex-col gap-4">
+    <Card title="Preferred Categories" subtitle="Choose what shows up in your community feed.">
+      <div className="flex flex-wrap gap-2">
+        {COMMUNITY_CATEGORIES.map((c, i) => (
+          <label
+            key={c}
+            className="px-4 py-1.5 rounded-full border border-[#E2E8F0] text-sm text-[#1E293B] cursor-pointer transition duration-[250ms] has-[:checked]:bg-[#006A40] has-[:checked]:text-white has-[:checked]:border-[#006A40]"
+          >
+            <input type="checkbox" defaultChecked={i < 4} className="hidden" />
+            {c}
+          </label>
+        ))}
+      </div>
+    </Card>
+    {/* <Card title="Nearby Radius" subtitle="Show updates within this distance from you.">
+        <input type="range" min="1" max="20" defaultValue="5" className="accent-[#006A40] w-full sm:w-80" />
+        <p className="text-xs text-[#64748B] mt-1">5 km</p>
+      </Card> */}
+    <Card title="Interest Tags">
+      <Field label="Add a tag" placeholder="e.g. Gardening, Cycling..." />
+    </Card>
+  </div>
+);
+
+// const ConnectedSection = () => (
+//   <Card title="Connected Accounts">
+//     <div className="flex flex-col divide-y divide-[#E2E8F0]">
+//       {CONNECTED_ACCOUNTS.map(({ label, icon: Icon, connected }) => (
+//         <div key={label} className="flex items-center justify-between py-3">
+//           <div className="flex items-center gap-3">
+//             <Icon size={20} />
+//             <span className="text-sm font-medium text-[#1E293B]">{label}</span>
+//             {connected && (
+//               <span className="flex items-center gap-1 text-xs text-[#16A34A] bg-[#16A34A]/10 px-2 py-0.5 rounded-full">
+//                 <FiCheckCircle size={11} /> Connected
+//               </span>
+//             )}
+//           </div>
+//           <button
+//             className={`px-4 py-1.5 rounded-full text-xs font-semibold transition duration-[250ms] ${connected
+//               ? "border border-[#EF4444]/30 text-[#EF4444] hover:bg-[#EF4444] hover:text-white"
+//               : "bg-[#006A40] text-white hover:bg-[#00532f]"
+//               }`}
+//           >
+//             {connected ? "Disconnect" : "Connect"}
+//           </button>
+//         </div>
+//       ))}
+//     </div>
+//   </Card>
+// );
+
+const AboutSection = () => (
+  <div className="flex flex-col gap-4">
+    <Card title="About LocalVibe">
+      <p className="text-sm text-[#64748B] leading-relaxed">
+        LocalVibe connects neighbors, local businesses, community events, emergency services, and local news
+        in one trusted platform. Version 1.0 &middot; &copy; 2026 LocalVibe.
+      </p>
+    </Card>
+    <Card title="Danger Zone" className="border-[#EF4444]/30">
+      <div className="flex flex-col gap-3">
+        {/* <div className="flex items-center justify-between p-4 rounded-xl bg-[#EF4444]/5 border border-[#EF4444]/20">
+          <div>
+            <p className="text-sm font-semibold text-[#0F172A]">Deactivate Account</p>
+            <p className="text-xs text-[#64748B]">Temporarily disable your account. You can reactivate anytime.</p>
+          </div>
+          <button className="px-4 py-2 rounded-full border border-[#EF4444] text-[#EF4444] text-xs font-semibold transition duration-[250ms] hover:bg-[#EF4444] hover:text-white shrink-0 ml-3">
+            Deactivate
+          </button>
+        </div> */}
+        <div className="flex items-center justify-between p-4 rounded-xl bg-[#EF4444]/5 border border-[#EF4444]/20">
+          <div>
+            <p className="text-sm font-semibold text-[#0F172A]">Delete Account</p>
+            <p className="text-xs text-[#64748B]">Permanently delete your account and all data. This cannot be undone.</p>
+          </div>
+          <button className="px-4 py-2 rounded-full border border-[#EF4444] text-[#EF4444] text-xs font-semibold transition duration-[250ms] hover:bg-[#EF4444] hover:text-white shrink-0 ml-3">
+            Delete
+          </button>
+        </div>
+        <div className="flex items-center justify-between p-4 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0]">
+          <p className="text-sm font-semibold text-[#0F172A]">Logout</p>
+          <button className="flex items-center gap-2 px-4 py-2 rounded-full bg-[#0F172A] text-white text-xs font-semibold transition duration-[250ms] hover:bg-[#1E293B] shrink-0 ml-3">
+            <FiLogOut size={14} /> Logout
+          </button>
+        </div>
+      </div>
+    </Card>
+  </div>
+);
+
+const SECTION_MAP = {
+  account: AccountSection,
+  security: SecuritySection,
+  privacy: PrivacySection,
+  notifications: NotificationsSection,
+  appearance: AppearanceSection,
+  language: LanguageSection,
+  community: CommunitySection,
+  // emergency: EmergencySection,
+  // connected: ConnectedSection,
+  // data: DataSection,
+  // help: HelpSection,
+  about: AboutSection,
+};
+
+const Settings = () => {
+  const [active, setActive] = useState("account");
+  // const [darkMode, setDarkMode] = useState(false);
+  const ActiveSection = SECTION_MAP[active];
+  const dispatch = useDispatch();
+
+  const darkMode = useSelector(
+    (state) => state.theme.mode === "dark"
+  );
+
+  return (
+    <div className="min-h-screen  font-[Poppins,sans-serif] text-[#1E293B]">
+      <div className=" max-w-6xl mx-auto h-[calc(100vh-70px)] sm:h-[calc(100vh-80px)] lg:h-[calc(100vh-90px)] px-4 sm:px-6 lg:px-8 py-6 sm:py-10 ">
+
+        <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+          <div>
+            <h1 className="text-2xl font-bold text-[#0F172A]">Settings</h1>
+            <p className="text-sm text-[#64748B] mt-1">Manage your LocalVibe account and preferences.</p>
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="relative hidden sm:block">
+              <FiSearch
+                size={16}
+                className="absolute left-4 top-1/2 -translate-y-1/2 text-[#64748B] pointer-events-none"
+              />
+
+              <input
+                type="text"
+                placeholder="Search settings..."
+                className="w-52 rounded-full border border-slate-200 pl-11 pr-4 py-3 text-sm text-neutral-700  placeholder:text-neutral-400 placeholder:font-normal  shadow-sm transition-all duration-200 hover:border-[#006A40] focus:border-[#006A40] focus:ring-4 focus:ring-[#006A40]/15 outline-none"
+              />
+            </div>
+            {/* <button
+              onClick={() => setDarkMode(!darkMode)}
+              className="w-10 h-10 flex items-center justify-center rounded-full border border-[#E2E8F0] text-[#64748B] transition duration-[250ms] hover:border-[#006A40] hover:text-[#006A40]"
+            >
+              {darkMode ? <FiSun size={17} /> : <FiMoon size={17} />}
+            </button> */}
+            <button
+              onClick={() => dispatch(toggleTheme())}
+              className="w-10 h-10 flex items-center justify-center rounded-full border border-[#E2E8F0] dark:border-neutral-700 bg-white dark:bg-neutral-800 text-[#64748B] dark:text-slate-300 transition-all duration-300 hover:border-[#006A40] hover:text-[#006A40] hover:scale-105"
+              aria-label="Toggle Theme"
+            >
+              {darkMode ? <FiSun size={17} /> : <FiMoon size={17} />}
+            </button>
+            <Link
+              to="/Profile"
+              className="w-10 cursor-pointer h-10 rounded-full bg-gradient-to-br from-[#006A40] to-[#0F172A] flex items-center justify-center text-white text-sm font-bold">
+              MP
+            </Link>
+          </div>
+        </header>
+
+        <div className="flex flex-col lg:flex-row gap-6">
+          {/* Sidebar — collapsible scroll row on mobile/tablet, fixed column on desktop */}
+          <aside className="lg:w-64 shrink-0">
+            <nav className="flex lg:flex-col gap-1.5 overflow-x-auto lg:overflow-visible pb-2 lg:pb-0 -mx-1 px-1 lg:mx-0 lg:px-0">
+              {NAV_ITEMS.map(({ id, label, icon: Icon }) => (
+                <button
+                  key={id}
+                  onClick={() => setActive(id)}
+                  className={`flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium whitespace-nowrap transition-all duration-[250ms] shrink-0
+                    ${active === id
+                      ? "bg-[#006A40] text-white "
+                      : "text-[#64748B] hover:bg-white hover:text-[#0F172A]"
+                    }`}
+                >
+                  <Icon size={17} />
+                  {label}
+                </button>
+              ))}
+            </nav>
+          </aside>
+
+          {/* Content */}
+          <main className="flex-1 min-w-0">
+            <ActiveSection />
+          </main>
+        </div>
+
+        <footer className="border-t border-[#E2E8F0] mt-7 pt-6 pb-4">
+          <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm text-[#64748B]">
+            {["About LocalVibe", "Privacy Policy", "Terms of Service", "Contact Us"].map((link) => (
+              <a key={link} href="#" className="transition duration-[250ms] hover:text-[#006A40]">
+                {link}
+              </a>
+            ))}
+          </div>
+        </footer>
+
+      </div>
+    </div>
+  );
+};
+
+export default Settings;

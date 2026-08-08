@@ -1,0 +1,12 @@
+{
+  "Gujarat": {
+    "Surat": ["Adajan", "Varachha", "Mota Varachha", "Vesu", "Piplod", "Rander", "Dumas", "City Light", "Pal", "Althan"],
+    "Ahmedabad": ["Bopal", "Satellite", "Vastrapur", "CG Road", "Paldi", "Navrangpura"],
+    "Vadodara": ["Alkapuri", "Gotri", "Manjalpur", "Akota"],
+    "Rajkot": ["Kalavad Road", "150 Feet Ring Road"]
+  },
+  "Maharashtra": {
+    "Mumbai": ["Andheri", "Bandra", "Colaba", "Dadar", "Juhu", "Worli", "Powai"],
+    "Pune": ["Baner", "Hinjewadi", "Koregaon Park", "Shivaji Nagar"]
+  }
+}

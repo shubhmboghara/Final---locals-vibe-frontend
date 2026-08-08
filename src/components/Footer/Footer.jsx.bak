@@ -1,0 +1,128 @@
+import React from "react";
+import {
+  FaFacebookF,
+  FaInstagram,
+  FaTwitter,
+  FaLinkedinIn,
+  FaHeart,
+} from "react-icons/fa";
+import { Link } from "react-router-dom";
+
+const Footer = () => {
+  return (
+    <footer className="bg-neutral-900 text-gray-300 ">
+      <div className="max-w-7xl mx-auto px-6 py-12">
+
+        {/* Top Section */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+
+          {/* Logo */}
+          <div>
+            <h2 className="text-3xl font-bold text-emerald-400">
+              LocalVibe
+            </h2>
+
+            <p className="mt-4 text-sm leading-7 text-gray-400">
+              Connecting neighborhoods through local news, events,
+              services, and community engagement.
+            </p>
+
+            <div className="flex gap-3 mt-6">
+              <a
+                href="#"
+                className="w-10 h-10 rounded-full bg-neutral-800 hover:bg-emerald-500 transition flex items-center justify-center"
+              >
+                <FaFacebookF />
+              </a>
+
+              <a
+                href="#"
+                className="w-10 h-10 rounded-full bg-neutral-800 hover:bg-emerald-500 transition flex items-center justify-center"
+              >
+                <FaInstagram />
+              </a>
+
+              <a
+                href="#"
+                className="w-10 h-10 rounded-full bg-neutral-800 hover:bg-emerald-500 transition flex items-center justify-center"
+              >
+                <FaTwitter />
+              </a>
+
+              <a
+                href="#"
+                className="w-10 h-10 rounded-full bg-neutral-800 hover:bg-emerald-500 transition flex items-center justify-center"
+              >
+                <FaLinkedinIn />
+              </a>
+            </div>
+          </div>
+
+          {/* Quick Links */}
+          <div>
+            <h3 className="text-xl font-semibold text-white mb-5">
+              Quick Links
+            </h3>
+
+            <ul className="space-y-3">
+              <li><Link to="/" className="hover:text-emerald-400">Home</Link></li>
+              <li><Link to="/news" className="hover:text-emerald-400">News</Link></li>
+              <li><Link to="/map" className="hover:text-emerald-400">Map</Link></li>
+              <li><Link to="/profile" className="hover:text-emerald-400">Profile</Link></li>
+            </ul>
+          </div>
+
+          {/* Services */}
+          <div>
+            <h3 className="text-xl font-semibold text-white mb-5">
+              Services
+            </h3>
+
+            <ul className="space-y-3">
+              <li>Community Reports</li>
+              <li>Emergency Alerts</li>
+              <li>Saved Places</li>
+              <li>Notifications</li>
+            </ul>
+          </div>
+
+          {/* Contact */}
+          <div>
+            <h3 className="text-xl font-semibold text-white mb-5">
+              Contact
+            </h3>
+
+            <p className="mb-2">
+              📍 Surat, Gujarat, India
+            </p>
+
+            <p className="mb-2">
+              📧 support@localvibe.com
+            </p>
+
+            <p>
+              📞 +91 98765 43210
+            </p>
+          </div>
+        </div>
+
+        {/* Bottom */}
+        <div className="border-t border-neutral-700 mt-10 pt-6 flex flex-col md:flex-row justify-between items-center text-sm">
+
+          <p>
+            © {new Date().getFullYear()} LocalVibe. All Rights Reserved.
+          </p>
+
+          <p className="flex items-center gap-2 mt-3 md:mt-0">
+            Made with
+            <FaHeart className="text-red-500" />
+            for the Community
+          </p>
+
+        </div>
+      </div>
+    </footer>
+  );
+};
+
+export default Footer;
