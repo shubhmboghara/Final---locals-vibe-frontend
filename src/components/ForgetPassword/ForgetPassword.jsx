@@ -59,7 +59,7 @@ const ForgetPassword = () => {
   return (
     <div className="min-h-screen flex items-center justify-center px-4 py-8">
       <div className="w-full max-w-md bg-white dark:bg-neutral-800 rounded-3xl shadow-2xl p-8 border border-gray-100 dark:border-neutral-700">
-        {/* Header */}
+        
         <div className="text-center mb-8">
           <div className="w-20 h-20 mx-auto rounded-full bg-[#006A40]/10 flex items-center justify-center mb-4">
             <svg
@@ -98,7 +98,7 @@ const ForgetPassword = () => {
           </div>
         )}
 
-        {/* Form */}
+        
         {!otpSent ? (
           <form onSubmit={handleSendOtp} className="space-y-5">
             <div>
@@ -190,7 +190,7 @@ const ForgetPassword = () => {
           </form>
         )}
 
-        {/* Footer */}
+        
         <div className="text-center mt-8 text-sm text-gray-500 dark:text-neutral-400">
           Remember your password?{" "}
           <Link

@@ -4,6 +4,7 @@ import { PostCard, SkeletonPost } from "../../components/PostCard/PostCard";
 import { useLocation, useNavigate } from "react-router-dom";
 import { searchItems } from "../../api/searchApi";
 import { normalizePost } from "../../api/postApi";
+import { getCurrentUser } from "../../api/userApi";
 
 const UserCard = ({ user }) => {
   const navigate = useNavigate();
@@ -33,15 +34,21 @@ export default function Search() {
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(false);
   const [results, setResults] = useState([]);
-  const [type, setType] = useState("all"); // "all", "users", "posts", "events", "polls"
+  const [type, setType] = useState("all");
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [totalResults, setTotalResults] = useState(0);
+  const [currentUser, setCurrentUser] = useState(null);
+
+  useEffect(() => {
+    getCurrentUser().then(res => {
+      setCurrentUser(res?.user || res?.data || res);
+    }).catch(console.warn);
+  }, []);
 
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Parse URL query parameter
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const q = params.get("q");
@@ -50,7 +57,6 @@ export default function Search() {
     }
   }, [location.search]);
 
-  // Fetch Search Results
   useEffect(() => {
     const fetchSearchResults = async () => {
       if (!search.trim()) {
@@ -144,8 +150,7 @@ export default function Search() {
   return (
     <div className="w-full">
       <div className="max-w-6xl mx-auto w-full px-4 sm:px-8 py-10 flex flex-col gap-8">
-        
-        {/* Search Header */}
+
         <div className="bg-white dark:bg-neutral-800 rounded-[20px] border border-[#E2E8F0] dark:border-neutral-700 p-6 shadow-sm">
           <h1 className="text-2xl font-bold text-[#0F172A] dark:text-white mb-6">Search</h1>
           
@@ -165,7 +170,6 @@ export default function Search() {
             )}
           </form>
 
-          {/* Filter Buttons */}
           <div className="flex items-center gap-3 overflow-x-auto pb-2 no-scrollbar">
             {["all", "users", "posts", "events", "polls"].map((t) => (
               <button
@@ -183,7 +187,6 @@ export default function Search() {
           </div>
         </div>
 
-        {/* Search Results */}
         <div>
           {search.trim() && !loading && (
             <h2 className="text-lg font-semibold text-[#0F172A] dark:text-white mb-6">
@@ -216,11 +219,19 @@ export default function Search() {
                 item.type === "user" ? (
                   <UserCard key={item.id} user={item} />
                 ) : (
-                  <PostCard key={item.id} post={item} />
+                  <PostCard 
+                    key={item.id} 
+                    post={item} 
+                    isOwnPost={currentUser && (
+                      item.userId === currentUser._id || 
+                      item.userId === currentUser.id ||
+                      (item.userObj && (item.userObj._id === currentUser._id || item.userObj.id === currentUser._id)) ||
+                      (item.author && (item.author._id === currentUser._id || item.author.id === currentUser._id || item.author === currentUser._id))
+                    )}
+                  />
                 )
               ))}
-              
-              {/* Pagination */}
+
               {totalPages > 1 && (
                 <div className="flex items-center justify-between pt-4 border-t border-[#E2E8F0] dark:border-neutral-700 mt-6">
                   <button

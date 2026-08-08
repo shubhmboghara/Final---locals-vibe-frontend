@@ -47,7 +47,7 @@ const AccountSection = () => {
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
 
-  // Profile state
+  
   const [name, setName] = useState("");
   const [bio, setBio] = useState("");
   const [avatar, setAvatar] = useState("");
@@ -58,11 +58,11 @@ const AccountSection = () => {
   const [neighborhood, setNeighborhood] = useState("");
   const [phone, setPhoneInput] = useState("");
 
-  // Email change state
+  
   const [showEmailChangeModal, setShowEmailChangeModal] = useState(false);
   const [newEmail, setNewEmail] = useState("");
   const [emailOtp, setEmailOtp] = useState("");
-  const [emailStep, setEmailStep] = useState(1); // 1: request, 2: confirm
+  const [emailStep, setEmailStep] = useState(1); 
 
   useEffect(() => {
     loadUserData();
@@ -83,7 +83,7 @@ const AccountSection = () => {
       setCity(userObj.city || "");
       setNeighborhood(userObj.neighborhood || "");
 
-      // Get phone
+      
       const phoneRes = await getPhone().catch(() => null);
       if (phoneRes && phoneRes.phoneNumber) {
         setPhoneInput(phoneRes.phoneNumber);
@@ -97,7 +97,7 @@ const AccountSection = () => {
     }
   };
 
-  // Avatar Handlers
+  
   const handleAvatarUpload = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -132,7 +132,7 @@ const AccountSection = () => {
     }
   };
 
-  // Banner Handlers
+  
   const handleBannerUpload = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -167,7 +167,7 @@ const AccountSection = () => {
     }
   };
 
-  // Profile Save (Name, Bio)
+  
   const handleSaveProfile = async (e) => {
     e.preventDefault();
     setError("");
@@ -187,7 +187,7 @@ const AccountSection = () => {
     }
   };
 
-  // Phone Handlers
+  
   const handleSavePhone = async () => {
     if (!phone || phone.trim().length < 10) {
       setError("Please enter a valid 10-digit phone number.");
@@ -221,7 +221,7 @@ const AccountSection = () => {
     }
   };
 
-  // Email Change Handlers
+  
   const handleRequestEmailChange = async (e) => {
     e.preventDefault();
     if (!newEmail) return setError("Please enter new email.");
@@ -286,7 +286,7 @@ const AccountSection = () => {
         </div>
       )}
 
-      {/* Cover Photo / Banner */}
+      
       <div className="mb-6">
         <label className="text-xs font-medium text-[#64748B] dark:text-neutral-400 block mb-2">
           Cover Photo / Banner
@@ -323,7 +323,7 @@ const AccountSection = () => {
         </div>
       </div>
 
-      {/* Profile Photo */}
+      
       <div className="mb-6">
         <label className="text-xs font-medium text-[#64748B] dark:text-neutral-400 block mb-2">
           Profile Photo
@@ -362,7 +362,7 @@ const AccountSection = () => {
         </div>
       </div>
 
-      {/* Profile Form */}
+      
       <form onSubmit={handleSaveProfile} className="space-y-4">
         <div className="grid sm:grid-cols-2 gap-4">
           <div className="flex flex-col gap-1.5">
@@ -450,7 +450,7 @@ const AccountSection = () => {
         </div>
       </form>
 
-      {/* Phone Number Section */}
+      
       <div className="mt-8 pt-6 border-t border-[#E2E8F0] dark:border-neutral-700">
         <h4 className="text-sm font-semibold text-[#0F172A] dark:text-white mb-3 flex items-center gap-2">
           <FiPhone className="text-[#006A40]" /> Phone Number Settings
@@ -482,7 +482,7 @@ const AccountSection = () => {
         </div>
       </div>
 
-      {/* Modal for Email Change */}
+      
       {showEmailChangeModal && (
         <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
           <div className="bg-white dark:bg-neutral-800 p-6 rounded-2xl max-w-md w-full shadow-2xl space-y-4">

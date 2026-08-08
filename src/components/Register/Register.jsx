@@ -5,8 +5,7 @@ import { registerUser, verifyOtp, resendOtp } from "../../api/authApi";
 
 const Register = () => {
   const navigate = useNavigate();
-  
-  // Step 1: Registration Form
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -18,8 +17,7 @@ const Register = () => {
   });
   
   const [locationData] = useState(initialLocationData);
-  
-  // Dropdown options
+
   const states = locationData ? Object.keys(locationData) : [];
   const cities = (locationData && formData.state && locationData[formData.state]) ? Object.keys(locationData[formData.state]) : [];
   const neighborhoods = (locationData && formData.state && formData.city && locationData[formData.state][formData.city]) ? locationData[formData.state][formData.city] : [];
@@ -27,8 +25,7 @@ const Register = () => {
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  
-  // Step 2: OTP
+
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const [resendCooldown, setResendCooldown] = useState(60);
 
@@ -60,8 +57,7 @@ const Register = () => {
   const handleRegisterSubmit = async (e) => {
     e.preventDefault();
     setError("");
-    
-    // Basic validation
+
     if (!formData.name.trim()) return setError("Name is required");
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) return setError("Valid email is required");
     if (formData.password.length < 8) return setError("Password must be at least 8 characters");
@@ -93,7 +89,6 @@ const Register = () => {
     newOtp[index] = value;
     setOtp(newOtp);
 
-    // Auto-focus next input
     if (value && index < 5) {
       document.getElementById(`otp-input-${index + 1}`)?.focus();
     }

@@ -93,7 +93,7 @@ const ResetPassword = () => {
         )}
 
         <form onSubmit={handleSubmit} className="space-y-5">
-          {/* Old Password */}
+          
           <div className="relative">
             <input
               type={showOld ? "text" : "password"}
@@ -114,7 +114,7 @@ const ResetPassword = () => {
             </button>
           </div>
 
-          {/* New Password */}
+          
           <div className="relative">
             <input
               type={showNew ? "text" : "password"}
@@ -135,7 +135,7 @@ const ResetPassword = () => {
             </button>
           </div>
 
-          {/* Strength */}
+          
           {passwordStrength() && (
             <p
               className={`text-sm font-medium ${
@@ -150,7 +150,7 @@ const ResetPassword = () => {
             </p>
           )}
 
-          {/* Confirm Password */}
+          
           <div className="relative">
             <input
               type={showConfirm ? "text" : "password"}

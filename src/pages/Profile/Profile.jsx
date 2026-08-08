@@ -22,7 +22,7 @@ const Profile = () => {
   const [followingCount, setFollowingCount] = useState(0);
   const [loading, setLoading] = useState(true);
 
-  // Modal state for followers/following
+  
   const [modalConfig, setModalConfig] = useState({ isOpen: false, title: "", type: "followers" });
 
   useEffect(() => {
@@ -32,14 +32,14 @@ const Profile = () => {
   const loadProfile = async () => {
     setLoading(true);
     try {
-      // getProfileMe returns { user } directly after apiClient unwrap
+      
       const resMe = await getProfileMe().catch(() => null);
-      // getCurrentUser returns user object directly
+      
       const userObj = resMe?.user || resMe || (await getCurrentUser().catch(() => null));
       if (userObj && (userObj._id || userObj.id)) {
         setUserData(userObj);
 
-        // Fetch live follow counts
+        
         const uId = userObj._id || userObj.id;
         if (uId) {
           const counts = await getFollowCounts(uId).catch(() => null);
@@ -50,7 +50,7 @@ const Profile = () => {
         }
       }
 
-      // Load my posts and events
+      
       const [myPostsRes, myEventsRes] = await Promise.allSettled([
         getMyPosts({ page: 1, limit: 20 }),
         getMyEvents(1, 20)
@@ -152,7 +152,7 @@ const Profile = () => {
     <div className="min-h-screen py-8 px-5">
       <div className="max-w-7xl mx-auto space-y-6">
 
-        {/* Cover */}
+        
         <div className="bg-white dark:bg-neutral-800 rounded-3xl overflow-hidden border border-slate-200 dark:border-neutral-700 shadow">
           <div className="relative h-64">
             {user.cover ? (
@@ -222,7 +222,7 @@ const Profile = () => {
           </div>
         </div>
 
-        {/* User Posts/Events/Polls */}
+        
         <section className="bg-white dark:bg-neutral-800 rounded-2xl border border-[#E2E8F0] dark:border-neutral-700 shadow-[0_8px_24px_rgba(15,23,42,0.04)] overflow-hidden mt-6 mb-6">
           <div className="flex border-b border-[#E2E8F0] dark:border-neutral-700">
             {["Posts", "Events", "Polls"].map((tab) => (

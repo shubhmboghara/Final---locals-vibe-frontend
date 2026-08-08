@@ -13,10 +13,10 @@ const Footer = () => {
     <footer className="bg-neutral-900 text-gray-300 ">
       <div className="max-w-7xl mx-auto px-6 py-12">
 
-        {/* Top Section */}
+        
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
 
-          {/* Logo */}
+          
           <div>
             <h2 className="text-3xl font-bold text-emerald-400">
               LocalVibe
@@ -58,7 +58,7 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* Quick Links */}
+          
           <div>
             <h3 className="text-xl font-semibold text-white mb-5">
               Quick Links
@@ -71,7 +71,7 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Services */}
+          
           <div>
             <h3 className="text-xl font-semibold text-white mb-5">
               Services
@@ -85,7 +85,7 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Contact */}
+          
           <div>
             <h3 className="text-xl font-semibold text-white mb-5">
               Contact
@@ -105,7 +105,7 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Bottom */}
+        
         <div className="border-t border-neutral-700 mt-10 pt-6 flex flex-col md:flex-row justify-between items-center text-sm">
 
           <p>

@@ -44,7 +44,7 @@ export const FollowListModal = ({ isOpen, onClose, title, userId, type }) => {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm animate-fade-in">
       <div className="w-full max-w-md rounded-2xl bg-white dark:bg-neutral-800 border border-[#E2E8F0] dark:border-neutral-700 shadow-xl overflow-hidden flex flex-col max-h-[80vh]">
-        {/* Header */}
+        
         <div className="flex items-center justify-between px-6 py-4 border-b border-[#E2E8F0] dark:border-neutral-700">
           <h2 className="text-lg font-bold text-[#0F172A] dark:text-white">{title}</h2>
           <button
@@ -55,7 +55,7 @@ export const FollowListModal = ({ isOpen, onClose, title, userId, type }) => {
           </button>
         </div>
 
-        {/* Content */}
+        
         <div className="p-4 overflow-y-auto flex-1">
           {loading ? (
             <div className="flex flex-col items-center justify-center py-12 gap-3">

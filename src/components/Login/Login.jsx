@@ -20,16 +20,14 @@ const Login = () => {
     setLoading(true);
     try {
       const response = await loginUser({ email, password });
-      
-      // Store token & user data if returned
+
       if (response.accessToken) {
         localStorage.setItem("accessToken", response.accessToken);
       }
       if (response.user) {
         localStorage.setItem("user", JSON.stringify(response.user));
       }
-      
-      // Navigate to the requested path or home
+
       const from = location.state?.from?.pathname || "/";
       navigate(from, { replace: true });
     } catch (err) {

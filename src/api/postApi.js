@@ -85,14 +85,13 @@ export const getMyPosts = async ({ page = 1, limit = 20 } = {}) => {
   }
 };
 
-// Backend returns posts with "author" field (populated user object)
 export const normalizePost = (p) => {
   if (!p) return null;
   const id = p._id || p.id;
   const content = p.content || p.text || "";
   const mediaList = Array.isArray(p.media) ? p.media : (Array.isArray(p.images) ? p.images : []);
 
-  // Backend uses "author" field, frontend was expecting "user"
+  
   const authorObj = p.author || p.user || {};
   let userName = "Neighbor";
   let userAvatar = "";

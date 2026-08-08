@@ -15,10 +15,6 @@ const TAG_STYLES = {
   Marketplace: "#D97706", Sports: "#0891B2", Education: "#059669", Technology: "#475569", Health: "#DC2626",
 };
 
-
-
-
-
 const postTypes = [
   { label: 'Post', icon: FiEdit3 },
   { label: 'Event', icon: FiCalendar },
@@ -229,7 +225,12 @@ const Home = () => {
                   key={post.id || post._id}
                   post={post}
                   showToast={showToast}
-                  isOwnPost={currentUser && (post.userId === currentUser._id || post.userId === currentUser.id)}
+                  isOwnPost={currentUser && (
+                    post.userId === currentUser._id || 
+                    post.userId === currentUser.id ||
+                    (post.userObj && (post.userObj._id === currentUser._id || post.userObj.id === currentUser._id)) ||
+                    (post.author && (post.author._id === currentUser._id || post.author.id === currentUser._id || post.author === currentUser._id))
+                  )}
                   onDelete={() => handleDeletePost(post.id || post._id)}
                   onEdit={() => handleEditPost(post)}
                 />

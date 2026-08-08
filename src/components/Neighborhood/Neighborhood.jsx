@@ -26,7 +26,7 @@ const Neighborhood = () => {
   return (
     <div className="w-full min-h-screen flex justify-center items-center p-5">
       <div className="w-full max-w-[600px] bg-white dark:bg-neutral-800 rounded-2xl shadow-[0_15px_40px_rgba(0,0,0,0.1)] p-10 max-[500px]:p-6">
-        {/* Heading */}
+        
         <h1 className="text-3xl max-[500px]:text-2xl font-bold text-center text-[#006a40] dark:text-[#4ade80] mb-2">
           Neighborhood
         </h1>
@@ -35,9 +35,9 @@ const Neighborhood = () => {
           Select your location to continue.
         </p>
 
-        {/* Form */}
+        
         <div className="flex flex-col gap-6">
-          {/* State */}
+          
           <div>
             <label className="block text-[#006a40] dark:text-[#4ade80] font-semibold mb-2">
               Select your State
@@ -55,7 +55,7 @@ const Neighborhood = () => {
             </select>
           </div>
 
-          {/* City */}
+          
           <div>
             <label className="block text-[#006a40] dark:text-[#4ade80] font-semibold mb-2">
               Select your City
@@ -74,7 +74,7 @@ const Neighborhood = () => {
             </select>
           </div>
 
-          {/* Neighborhood */}
+          
           <div>
             <label className="block text-[#006a40] dark:text-[#4ade80] font-semibold mb-2">
               Select your Neighborhood
@@ -94,7 +94,7 @@ const Neighborhood = () => {
           </div>
         </div>
 
-        {/* Buttons */}
+        
         <div className="flex justify-between items-center mt-10">
           <Link
             to="/login"

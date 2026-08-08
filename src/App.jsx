@@ -27,7 +27,7 @@ function App() {
     document.documentElement.classList.add(theme);
   }, [theme]);
 
-  // Don't show Navbar on public auth routes
+  
   const publicRoutes = ["/login", "/register", "/Otp", "/forget-password", "/reset-password"];
   const isPublicRoute = publicRoutes.includes(location.pathname);
 

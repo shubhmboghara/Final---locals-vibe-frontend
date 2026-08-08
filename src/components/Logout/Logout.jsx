@@ -25,24 +25,24 @@ const Logout = () => {
   return (
     <div className="w-full min-h-screen flex justify-center items-center p-5">
       <div className="w-full max-w-[420px] bg-white dark:bg-neutral-800 p-10 sm:p-10 rounded-2xl shadow-[0_15px_40px_rgba(0,0,0,0.1)] flex flex-col gap-4 text-center">
-        {/* Icon */}
+        
         <div className="w-24 h-24 mx-auto rounded-full bg-[#006A40]/10 flex items-center justify-center">
           <FiLogOut className="text-[#006A40] text-5xl" />
         </div>
 
-        {/* Heading */}
+        
         <h1 className="text-[#006A40] text-center text-3xl sm:text-[28px] font-bold">
           Logout
         </h1>
 
-        {/* Description */}
+        
         <p className="text-center text-gray-500 dark:text-neutral-400 text-[15px] sm:text-sm mb-2 leading-relaxed">
           Are you sure you want to logout from your account?
           <br />
           You can login again anytime.
         </p>
 
-        {/* Buttons */}
+        
         <div className="flex gap-[18px] mt-2">
           <button
             onClick={() => navigate(-1)}
@@ -61,7 +61,7 @@ const Logout = () => {
           </button>
         </div>
 
-        {/* Footer */}
+        
         <p className="text-sm text-gray-400 dark:text-neutral-500 mt-4">
           Thank you for using{" "}
           <span className="font-semibold text-[#006A40]">LocalVibe</span>.

@@ -16,8 +16,8 @@ const NAV_ITEMS = [
   { label: "Search", path: "/search", icon: FiSearch },
   { label: "Post", path: "/post", icon: SiPostman },
   { label: "Settings", path: "/setting", icon: IoIosSettings },
-  // { label: "Map", path: "/map", icon: TbMapExclamation },
-  // { label: "Reports", path: "/report", icon: TbFileFilled },
+  
+  
 ];
 
 const Navbar = () => {
@@ -60,7 +60,7 @@ const Navbar = () => {
   return (
     <>
 
-      {/* Mobile Header */}
+      
       <header className="lg:hidden fixed top-0 left-0 w-full h-16 bg-[#F0F5EE] dark:bg-neutral-900 flex items-center justify-between px-5 z-50">
         <h1 className="text-2xl font-bold text-[#1F8A70]">LocalVibe</h1>
         <div className="flex items-center gap-4">
@@ -86,7 +86,7 @@ const Navbar = () => {
             transform transition-transform duration-300
             ${open ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}`}
           >
-        {/* Logo */}
+        
         <div className="flex items-center justify-between px-6 py-6 ">
           <h1 className="text-3xl font-bold text-[#1F8A70]">
             Local<span className="text-[#1f8a21]">Vibe</span>
@@ -96,7 +96,7 @@ const Navbar = () => {
           </button>
         </div>
 
-        {/* Menu */}
+        
         <nav className="mt-5 px-4 flex-1 overflow-y-auto">
           {NAV_ITEMS.map((item, index) => {
             const Icon = item.icon;

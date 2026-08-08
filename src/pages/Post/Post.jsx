@@ -24,11 +24,10 @@ import {
   FiClock,
 } from "react-icons/fi";
 
-
 const POST_TYPES = [
   { id: "post", label: "Post", icon: FiEdit3 },
   { id: "event", label: "Event", icon: FiCalendar },
-  // { id: "question", label: "Question", icon: FiHelpCircle },
+
   { id: "poll", label: "Poll", icon: FiBarChart2 },
 ];
 
@@ -41,8 +40,6 @@ const VISIBILITY_OPTIONS = [
 
 const EVENT_CATEGORIES = ["Community", "Sports", "Education", "Festival", "Charity"];
 
-// const QUESTION_CATEGORIES = ["General", "Technology", "Education", "Health", "Government", "Community"];
-
 const POLL_DURATIONS = [
   { id: "1d", label: "1 Day" },
   { id: "3d", label: "3 Days" },
@@ -53,8 +50,6 @@ const POLL_DURATIONS = [
 const MAX_FILE_SIZE_MB = 10;
 const SUPPORTED_MEDIA_TYPES = ["image/png", "image/jpeg", "image/webp", "video/mp4", "video/webm", "video/quicktime"];
 const MAX_POLL_OPTIONS = 6;
-
-
 
 const INITIAL_FORM_STATE = {
   post: {
@@ -74,13 +69,6 @@ const INITIAL_FORM_STATE = {
     organizer: "",
     category: "",
   },
-  // question: {
-  //   title: "",
-  //   description: "",
-  //   category: "",
-  //   allowAnonymous: false,
-  //   allowComments: true,
-  // },
   poll: {
     question: "",
     options: ["", ""],
@@ -95,7 +83,6 @@ const inputClass =
   "placeholder:text-[#94A3B8] dark:text-neutral-500 focus:outline-none focus:ring-2 focus:ring-[#006A40]/30";
 
 const labelClass = "mb-1.5 block text-xs font-semibold uppercase tracking-wide text-[#64748B] dark:text-neutral-400";
-
 
 function PrimaryButton({ children, onClick, type = "button", disabled = false, className = "", icon: Icon = null }) {
   return (
@@ -377,8 +364,6 @@ function PostTypeTabs({ activeType, onChange }) {
   );
 }
 
-
-
 function EmptyPreview({ label }) {
   return (
     <div className="flex h-24 items-center justify-center rounded-xl bg-[#F8FAFC] dark:bg-neutral-900/50 text-xs text-[#94A3B8] dark:text-neutral-500">{label}</div>
@@ -432,7 +417,7 @@ function PreviewBody({ postType, data }) {
                       <FiPlay className="text-white h-8 w-8 opacity-80" />
                     </div>
                   )}
-                  {/* Show remaining media count */}
+                  
                   {index === 3 && mediaCount > 4 && (
                     <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
                       <span className="text-white text-2xl font-bold">
@@ -451,7 +436,7 @@ function PreviewBody({ postType, data }) {
       return (
         <div className="rounded-2xl border border-[#E2E8F0] dark:border-neutral-700 overflow-hidden mb-3 bg-white dark:bg-neutral-800 shadow-sm">
 
-          {/* Banner */}
+          
           {data.banner ? (
             <img
               src={data.banner.previewUrl}
@@ -464,15 +449,15 @@ function PreviewBody({ postType, data }) {
             </div>
           )}
 
-          {/* Event Content */}
+          
           <div className="p-4">
 
-            {/* Event Title */}
+            
             <h3 className="text-sm font-semibold text-[#0F172A] dark:text-white">
               {data.title || "Untitled Event"}
             </h3>
 
-            {/* Date & Time */}
+            
             <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-[#64748B] dark:text-neutral-400">
               <span className="flex items-center gap-1">
                 <FiCalendar size={13} />
@@ -485,12 +470,12 @@ function PreviewBody({ postType, data }) {
               </span>
             </div>
 
-            {/* Organizer */}
+            
             <p className="mt-2 text-xs text-[#94A3B8] dark:text-neutral-500">
               By {data.organizer || "Organizer"}
             </p>
 
-            {/* Venue */}
+            
             {data.venue && (
               <div className="mt-2 flex items-center gap-1 text-xs text-[#64748B] dark:text-neutral-400">
                 <FiMapPin size={13} />
@@ -498,14 +483,14 @@ function PreviewBody({ postType, data }) {
               </div>
             )}
 
-            {/* Description */}
+            
             {data.description && (
               <p className="mt-3 text-sm text-[#475569] line-clamp-2">
                 {data.description}
               </p>
             )}
 
-            {/* Buttons */}
+            
             <div className="flex gap-2 mt-4">
               <button
                 type="button"
@@ -525,12 +510,11 @@ function PreviewBody({ postType, data }) {
         </div>
       );
 
-
     case "poll":
       return (
         <div className="rounded-2xl border border-[#E2E8F0] dark:border-neutral-700 bg-white dark:bg-neutral-800 p-4 mb-3">
 
-          {/* Poll Question */}
+          
           <div className="flex items-start gap-3 mb-4">
             <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#006A40]/10">
               <FiBarChart2 className="text-[#006A40] text-lg" />
@@ -549,7 +533,7 @@ function PreviewBody({ postType, data }) {
             </div>
           </div>
 
-          {/* Poll Options */}
+          
           <div className="space-y-2">
             {data.options
               .filter((option) => option.trim() !== "")
@@ -562,7 +546,7 @@ function PreviewBody({ postType, data }) {
                   <span className="relative flex items-center justify-between text-xs font-medium text-[#1E293B] dark:text-neutral-100">
                     <span>{option}</span>
 
-                    {/* Preview percentage */}
+                    
                     <span className="text-[#94A3B8] dark:text-neutral-500 text-[11px]">
                       --%
                     </span>
@@ -570,7 +554,7 @@ function PreviewBody({ postType, data }) {
                 </button>
               ))}
 
-            {/* Empty placeholder */}
+            
             {data.options.filter((option) => option.trim() !== "").length === 0 && (
               <div className="rounded-xl border border-dashed border-[#CBD5E1] py-6 text-center text-sm text-[#94A3B8] dark:text-neutral-500">
                 Poll options will appear here
@@ -578,12 +562,12 @@ function PreviewBody({ postType, data }) {
             )}
           </div>
 
-          {/* Total Votes */}
+          
           <p className="mt-3 text-[11px] text-[#94A3B8] dark:text-neutral-500">
             0 votes
           </p>
 
-          {/* Location */}
+          
         </div>
       );
 
@@ -591,7 +575,6 @@ function PreviewBody({ postType, data }) {
       return null;
   }
 }
-
 
 function PostPreview({ user, postType, formData }) {
   const avatarSrc = user?.avatar || user?.avatarUrl;
@@ -631,7 +614,6 @@ function PostPreview({ user, postType, formData }) {
     </div>
   );
 }
-
 
 function MediaPostForm({ data, onChange, errors }) {
   function handleFiles(files) {
@@ -830,60 +812,6 @@ function EventPostForm({ data, onChange, errors }) {
   );
 }
 
-// function QuestionPostForm({ data, onChange, errors }) {
-//   function set(field) {
-//     return (e) => onChange({ ...data, [field]: e.target.value });
-//   }
-
-//   function toggle(field, value) {
-//     onChange({ ...data, [field]: value });
-//   }
-
-//   return (
-//     <div className="space-y-5">
-//       <div>
-//         <label className={labelClass}>Question Title</label>
-//         <input
-//           type="text"
-//           value={data.title}
-//           onChange={set("title")}
-//           placeholder="What do you want to ask your neighbors?"
-//           className={`${inputClass} ${errors.title ? "border-red-300" : ""}`}
-//         />
-//         {errors.title && <p className="mt-1 text-xs font-medium text-red-500">{errors.title}</p>}
-//       </div>
-
-//       <div>
-//         <label className={labelClass}>Question Description</label>
-//         <textarea
-//           value={data.description}
-//           onChange={set("description")}
-//           rows={4}
-//           placeholder="Add more context..."
-//           className={`${inputClass} resize-none`}
-//         />
-//       </div>
-
-//       <div>
-//         <label className={labelClass}>Category</label>
-//         <select value={data.category} onChange={set("category")} className={inputClass}>
-//           <option value="">Select category</option>
-//           {QUESTION_CATEGORIES.map((category) => (
-//             <option key={category} value={category}>
-//               {category}
-//             </option>
-//           ))}
-//         </select>
-//       </div>
-
-//       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-//         <ToggleRow label="Allow Anonymous" value={data.allowAnonymous} onChange={(value) => toggle("allowAnonymous", value)} />
-//         <ToggleRow label="Allow Comments" value={data.allowComments} onChange={(value) => toggle("allowComments", value)} />
-//       </div>
-//     </div>
-//   );
-// }
-
 function PollPostForm({ data, onChange, errors }) {
   function setQuestion(e) {
     onChange({ ...data, question: e.target.value });
@@ -991,7 +919,6 @@ function PollPostForm({ data, onChange, errors }) {
   );
 }
 
-
 function Post() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -1004,7 +931,7 @@ function Post() {
   const [publishedMessage, setPublishedMessage] = useState("");
   const [currentUser, setCurrentUser] = useState(null);
 
-  // Fetch real user from API
+  
   useEffect(() => {
     getCurrentUser()
       .then((u) => setCurrentUser(u?.user || u || null))
@@ -1159,8 +1086,6 @@ function Post() {
         return <MediaPostForm data={activeData} onChange={updateActiveData} errors={errors} />;
       case "event":
         return <EventPostForm data={activeData} onChange={updateActiveData} errors={errors} />;
-      // case "question":
-      //   return <QuestionPostForm data={activeData} onChange={updateActiveData} errors={errors} />;
       case "poll":
         return <PollPostForm data={activeData} onChange={updateActiveData} errors={errors} />;
       default:
@@ -1171,7 +1096,6 @@ function Post() {
   return (
     <div className="min-h-screen pb-28 lg:pb-10 p-8">
       <div className="mx-auto max-w-6xl  py-6 sm:px-6 lg:px-8">
-
 
         <div className=" flex items-center justify-between gap-4 ">
           <h1 className="mb-6 text-2xl font-bold text-[#1E293B] dark:text-neutral-100 sm:text-2xl">Create New Post</h1>
@@ -1186,7 +1110,6 @@ function Post() {
 
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_380px]">
           <div className="space-y-6">
-            {/* <PostHeader user={CURRENT_USER} visibility={visibility} onVisibilityChange={setVisibility} /> */}
 
             <PostTypeTabs activeType={postType} onChange={handleTypeChange} />
 

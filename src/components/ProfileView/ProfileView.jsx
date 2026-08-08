@@ -30,7 +30,6 @@ const ProfileView = () => {
   const [isSubmittingFollow, setIsSubmittingFollow] = useState(false);
   const [feedbackMsg, setFeedbackMsg] = useState({ text: "", isError: false });
 
-  // Modal state for followers/following
   const [modalConfig, setModalConfig] = useState({ isOpen: false, title: "", type: "followers" });
 
   useEffect(() => {
@@ -40,21 +39,19 @@ const ProfileView = () => {
 
     const loadData = async () => {
       try {
-        // 1. Get current user
+
         const meRes = await getProfileMe().catch(() => null);
         const meObj = meRes?.user || (await getCurrentUser().catch(() => null));
         if (isMounted) setCurrentUser(meObj);
 
         const currentUserId = meObj?._id || meObj?.id;
 
-        // 2. Get target user
         let targetObj = null;
         if (id) {
           const profileRes = await getProfileByUserId(id).catch(() => null);
           targetObj = profileRes?.user || profileRes;
         }
 
-        // Fallback to current user if id matches or profile not found by ID
         if (!targetObj && meObj) {
           targetObj = meObj;
         }
@@ -64,7 +61,7 @@ const ProfileView = () => {
         const targetUserId = targetObj?._id || targetObj?.id || id;
 
         if (targetUserId) {
-          // 3. Get follow counts and posts
+
           const [counts, followersRes, userPostsRes, userEventsRes] = await Promise.allSettled([
             getFollowCounts(targetUserId),
             currentUserId && currentUserId !== targetUserId ? getFollowers(targetUserId, 1, 100) : Promise.resolve(null),
@@ -85,7 +82,6 @@ const ProfileView = () => {
               setIsFollowing(followingCheck);
             }
 
-            // Combine posts and events
             let combined = [];
             if (userPostsRes.status === "fulfilled" && userPostsRes.value && Array.isArray(userPostsRes.value.posts)) {
               combined = [...combined, ...userPostsRes.value.posts.map(normalizePost)];
@@ -200,7 +196,6 @@ const ProfileView = () => {
     <div className="min-h-screen py-8 px-5">
       <div className="max-w-7xl mx-auto space-y-6">
 
-        {/* Feedback Alert */}
         {feedbackMsg.text && (
           <div
             className={`p-4 rounded-2xl text-sm font-medium border ${
@@ -213,7 +208,6 @@ const ProfileView = () => {
           </div>
         )}
 
-        {/* Cover & Profile Header */}
         <div className="bg-white dark:bg-neutral-800 rounded-3xl overflow-hidden border border-slate-200 dark:border-neutral-700 shadow">
           <div className="relative h-64">
             {coverImg ? (
@@ -316,7 +310,6 @@ const ProfileView = () => {
           </div>
         </div>
 
-        {/* User Posts/Events/Polls */}
         <section className="bg-white dark:bg-neutral-800 rounded-2xl border border-[#E2E8F0] dark:border-neutral-700 shadow-[0_8px_24px_rgba(15,23,42,0.04)] overflow-hidden mt-6 mb-6">
           <div className="flex border-b border-[#E2E8F0] dark:border-neutral-700">
             {["Posts", "Events", "Polls"].map((tab) => (
@@ -338,6 +331,7 @@ const ProfileView = () => {
               <PostCard
                 key={post.id || post._id}
                 post={{ ...post, user: name, username: `@${name.toLowerCase().replace(/\s+/g, "")}` }}
+                isOwnPost={isOwnProfile}
               />
             ))}
             {filteredPosts.length === 0 && (

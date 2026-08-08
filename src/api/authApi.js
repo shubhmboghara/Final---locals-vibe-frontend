@@ -28,12 +28,12 @@ export const resendOtp = async ({ email }) => {
 
 export const loginUser = async ({ email, password }) => {
   try {
-    // Use axios directly for login to get raw response and extract token
+    
     const response = await axios.post(`${API_BASE_URL}/api/auth/login`, { email, password }, { withCredentials: true });
     const body = response.data;
-    // body = { statusCode, data: { user, accessToken }, message }
+    
     const data = body?.data || body;
-    return data; // { user, accessToken }
+    return data; 
   } catch (error) {
     throw new Error(parseErrorMessage(error));
   }

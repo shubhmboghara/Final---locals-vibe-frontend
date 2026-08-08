@@ -14,7 +14,6 @@ const TAG_STYLES = {
   Marketplace: "#D97706", Sports: "#0891B2", Education: "#059669", Technology: "#475569", Health: "#DC2626",
 };
 
-
 const Tag = ({ label }) => (
   <span
     className="text-[10px] font-semibold px-2.5 py-1 rounded-full"
@@ -138,7 +137,7 @@ const CommentsPreview = ({ post, showToast }) => {
   const [currentUser, setCurrentUser] = useState(null);
 
   const postId = post._id || post.id;
-  const postAuthorId = post.userId; // Provided by normalizePost
+  const postAuthorId = post.userId;
 
   useEffect(() => {
     let isMounted = true;
@@ -346,7 +345,7 @@ export const MediaPost = ({ post, showToast = () => {} }) => {
                <FiImage size={42} className="text-[#006A40]/40 transition duration-300 group-hover:scale-110" />
             )}
           </div>
-          {/* Show remaining media count */}
+
           {i === 3 && mediaCount > 4 && (
             <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
               <span className="text-white text-2xl font-bold">
@@ -484,7 +483,6 @@ export const PollPost = ({ post, showToast = () => {} }) => {
     </div>
   )
 }
-
 
 export const PostCard = ({ post, showToast = () => {}, isOwnPost = false, onDelete, onEdit }) => {
   const [liked, setLiked] = useState(false);
