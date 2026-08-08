@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { getFeed, deletePost, normalizePost } from "../../api/postApi";
 import { getEventsFeed } from "../../api/eventApi";
+import { getProfileMe } from "../../api/userApi";
 import {
   FiSearch, FiMoreHorizontal, FiHeart, FiMessageCircle, FiBookmark,
   FiMapPin, FiClock, FiFlag, FiCalendar, FiPlus, FiImage, FiVideo, FiHelpCircle,
@@ -34,6 +35,7 @@ const Home = () => {
   const [feedPosts, setFeedPosts] = useState([]);
   const [page, setPage] = useState(1);
   const [totalPosts, setTotalPosts] = useState(0);
+  const [currentUser, setCurrentUser] = useState(null);
   const toastId = useRef(0);
 
   const fetchPosts = async (p = 1) => {
@@ -94,8 +96,15 @@ const Home = () => {
   };
 
   useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const res = await getProfileMe();
+        setCurrentUser(res?.user || res?.data?.user || res?.data || res);
+      } catch (err) {}
+    };
+    if (!currentUser) fetchUser();
     fetchPosts(page);
-  }, [page]);
+  }, [page, currentUser]);
 
   const showToast = (msg) => {
     const id = ++toastId.current;
@@ -220,7 +229,7 @@ const Home = () => {
                   key={post.id || post._id}
                   post={post}
                   showToast={showToast}
-                  isOwnPost={true}
+                  isOwnPost={currentUser && (post.userId === currentUser._id || post.userId === currentUser.id)}
                   onDelete={() => handleDeletePost(post.id || post._id)}
                   onEdit={() => handleEditPost(post)}
                 />

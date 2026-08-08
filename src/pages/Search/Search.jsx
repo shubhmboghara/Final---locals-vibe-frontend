@@ -81,8 +81,8 @@ export default function Search() {
                 organizer: item.organizer || (item.author && item.author.name) || "",
                 text: item.description,
                 userObj: item.author || {},
-                user: item.author?.name || "",
-                username: item.author?.email?.split("@")[0] || "",
+                user: item.author?.name || "Neighbor",
+                username: item.author?.email?.split("@")[0] || (item.author?.name ? item.author.name.toLowerCase().replace(/\s+/g, '') : "neighbor"),
                 userAvatar: item.author?.avatar || "",
                 createdAt: item.createdAt
               };
@@ -99,8 +99,8 @@ export default function Search() {
                 question: item.question,
                 options,
                 totalVotes,
-                user: item.author?.name || "",
-                username: item.author?.email?.split("@")[0] || "",
+                user: item.author?.name || "Neighbor",
+                username: item.author?.email?.split("@")[0] || (item.author?.name ? item.author.name.toLowerCase().replace(/\s+/g, '') : "neighbor"),
                 userAvatar: item.author?.avatar || "",
                 createdAt: item.createdAt || item.expiresAt
               };

@@ -57,7 +57,7 @@ const PostHeader = ({ post, isOwnPost, onDelete, onEdit }) => {
     <div className="flex items-start justify-between mb-3 relative">
       <div className="flex items-center gap-3">
         <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#006A40] to-[#0F172A] flex items-center justify-center text-white text-base font-bold shrink-0 overflow-hidden">
-          <Link to={`/Profile-View/${post.username}`} className="flex items-center justify-center w-full h-full">
+          <Link to={`/Profile-View/${post.userId || post.username}`} className="flex items-center justify-center w-full h-full">
             {post.userAvatar ? (
               <img src={post.userAvatar} alt={post.user} className="w-full h-full object-cover" />
             ) : (
@@ -360,38 +360,97 @@ export const MediaPost = ({ post, showToast = () => {} }) => {
   );
 }
 
-export const EventPost = ({ post, showToast = () => {} }) => {
-  const [joined, setJoined] = useState(false);
-  const [interested, setInterested] = useState(false);
+export const EventPost = ({ post }) => {
+  const formattedDate = post.date ? new Date(post.date).toLocaleDateString("en-US", { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' }) : post.eventDate;
+  
   return (
-    <div className="rounded-2xl border border-[#E2E8F0] dark:border-neutral-700 overflow-hidden mb-3">
+    <div className="rounded-2xl border border-[#E2E8F0] dark:border-neutral-700 overflow-hidden mb-3 bg-white dark:bg-neutral-800 shadow-[0_2px_10px_-3px_rgba(6,81,237,0.1)] transition hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
       {post.banner ? (
-        <img src={post.banner.previewUrl || post.banner} alt="Event Banner" className="h-28 w-full object-cover" />
+        <img src={post.banner.previewUrl || post.banner} alt={post.title || post.eventTitle} className="h-40 sm:h-56 w-full object-cover" />
       ) : (
-        <div className="h-28 bg-gradient-to-br from-[#006A40] to-[#0F172A]" />
+        <div className="h-28 sm:h-36 bg-gradient-to-r from-[#006A40] to-[#0a1f15] relative overflow-hidden flex items-center justify-center">
+          <FiCalendar size={48} className="text-white/10 absolute -right-4 -bottom-4 transform rotate-12 scale-150" />
+        </div>
       )}
-      <div className="p-4">
-        <p className="text-sm font-semibold text-[#0F172A] dark:text-white">{post.eventTitle}</p>
-        {post.category && (
-          <div className="mt-1 mb-2">
-            <span className="text-[10px] font-semibold px-2.5 py-1 rounded-full bg-[#006A40]/10 text-[#006A40]">
+      
+      <div className="p-5 sm:p-6">
+        <div className="mb-4">
+          {post.category && (
+            <span className="inline-block mb-3 text-[10px] uppercase tracking-widest font-extrabold px-3 py-1 rounded-md bg-[#006A40]/10 text-[#006A40]">
               {post.category}
             </span>
+          )}
+          <h3 className="text-xl sm:text-2xl font-bold text-[#0F172A] dark:text-white leading-tight">
+            {post.title || post.eventTitle}
+          </h3>
+        </div>
+
+        <p className="text-[15px] text-[#475569] dark:text-neutral-300 leading-relaxed mb-6 whitespace-pre-wrap">
+          {post.description || post.text}
+        </p>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-7 bg-[#F8FAFC] dark:bg-neutral-900/40 p-4 rounded-xl border border-[#F1F5F9] dark:border-neutral-800/60">
+          <div className="flex items-start gap-3">
+            <div className="mt-0.5 p-2 bg-white dark:bg-neutral-800 rounded-lg shadow-sm text-[#006A40] border border-[#E2E8F0] dark:border-neutral-700">
+              <FiCalendar size={18} />
+            </div>
+            <div>
+              <p className="text-[11px] font-bold text-[#64748B] dark:text-neutral-500 uppercase tracking-wider">Date & Time</p>
+              <p className="text-sm font-semibold text-[#0F172A] dark:text-white mt-0.5">{formattedDate}</p>
+              <p className="text-sm text-[#475569] dark:text-neutral-400 font-medium">
+                {post.startTime} {post.endTime ? `— ${post.endTime}` : ""}
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-start gap-3">
+            <div className="mt-0.5 p-2 bg-white dark:bg-neutral-800 rounded-lg shadow-sm text-[#006A40] border border-[#E2E8F0] dark:border-neutral-700">
+              <FiMapPin size={18} />
+            </div>
+            <div>
+              <p className="text-[11px] font-bold text-[#64748B] dark:text-neutral-500 uppercase tracking-wider">Location</p>
+              <p className="text-sm font-semibold text-[#0F172A] dark:text-white mt-0.5">{post.venue || "TBD"}</p>
+              {post.location && <p className="text-sm text-[#475569] dark:text-neutral-400 font-medium">{post.location}</p>}
+            </div>
+          </div>
+
+          {(post.organizer || post.maxParticipants > 0) && (
+            <div className="flex items-start gap-3 sm:col-span-2 pt-3 mt-1 border-t border-[#E2E8F0] dark:border-neutral-700/50">
+              <div className="mt-0.5 p-2 bg-white dark:bg-neutral-800 rounded-lg shadow-sm text-[#006A40] border border-[#E2E8F0] dark:border-neutral-700">
+                <FiUsers size={18} />
+              </div>
+              <div className="flex flex-col sm:flex-row sm:items-center sm:gap-10 w-full">
+                {post.organizer && (
+                  <div>
+                    <p className="text-[11px] font-bold text-[#64748B] dark:text-neutral-500 uppercase tracking-wider">Organizer</p>
+                    <p className="text-sm font-medium text-[#0F172A] dark:text-white mt-0.5">{post.organizer}</p>
+                  </div>
+                )}
+                {post.maxParticipants > 0 && (
+                  <div className="mt-3 sm:mt-0">
+                    <p className="text-[11px] font-bold text-[#64748B] dark:text-neutral-500 uppercase tracking-wider">Capacity</p>
+                    <p className="text-sm font-medium text-[#0F172A] dark:text-white mt-0.5">{post.maxParticipants} max attendees</p>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+        </div>
+
+        {post.registrationLink ? (
+          <a 
+            href={post.registrationLink.startsWith('http') ? post.registrationLink : `https://${post.registrationLink}`}
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="w-full flex items-center justify-center py-3.5 rounded-xl bg-[#006A40] text-white text-sm font-bold shadow-md hover:shadow-lg hover:bg-[#00532f] transition-all duration-300 active:scale-[0.98]"
+          >
+            Register Now
+          </a>
+        ) : (
+          <div className="w-full flex items-center justify-center py-3.5 rounded-xl bg-[#F1F5F9] dark:bg-neutral-800/60 border border-[#E2E8F0] dark:border-neutral-700 text-[#94A3B8] dark:text-neutral-500 text-sm font-bold cursor-not-allowed">
+            No External Registration
           </div>
         )}
-        <p className="text-sm text-[#64748B] dark:text-neutral-400 mt-1 flex flex-wrap items-center gap-x-3">
-          <span className="flex items-center gap-1"><FiCalendar size={12} /> {post.eventDate}</span>
-          <span className="flex items-center gap-1"><FiClock size={12} /> {post.eventTime}</span>
-        </p>
-        <p className="text-[11px] text-[#94A3B8] dark:text-neutral-500 mt-1">By {post.organizer}</p>
-        <div className="flex gap-2 mt-3">
-          <button onClick={() => { setJoined(!joined); showToast(joined ? "Left event" : "Joined event"); }} className={"px-5 py-2 rounded-full text-sm font-semibold transition duration-300 " + (joined ? "bg-[#006A40]/10 text-[#006A40]" : "bg-[#006A40] text-white hover:bg-[#00532f]")}>
-            {joined ? "Joined" : "Join"}
-          </button>
-          <button onClick={() => setInterested(!interested)} className={"px-5 py-2 rounded-full text-sm font-semibold border transition duration-300 " + (interested ? "border-[#006A40] text-[#006A40]" : "border-[#E2E8F0] dark:border-neutral-700 text-[#64748B] dark:text-neutral-400")}>
-            Interested
-          </button>
-        </div>
       </div>
     </div>
   )

@@ -9,7 +9,7 @@ import { HiOutlineMenuAlt2 } from "react-icons/hi";
 import { FiSearch } from "react-icons/fi";
 import { NavLink, Link, useNavigate } from "react-router-dom";
 import { SiPostman } from "react-icons/si";
-import { getCurrentUser } from "../../api/userApi";
+import { getProfileMe } from "../../api/userApi";
 
 const NAV_ITEMS = [
   { label: "Home", path: "/home", icon: AiFillHome },
@@ -23,14 +23,23 @@ const NAV_ITEMS = [
 const Navbar = () => {
   const [open, setOpen] = useState(false);
   const [showLogout, setShowLogout] = useState(false);
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(() => {
+    const stored = localStorage.getItem("user");
+    return stored ? JSON.parse(stored) : null;
+  });
   const hoverTimer = React.useRef(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     let isMounted = true;
-    getCurrentUser().then(res => {
-      if (isMounted && res?.user) setUser(res.user);
+    getProfileMe().then(res => {
+      if (isMounted) {
+        const userData = res?.user || res?.data?.user || res?.data || res;
+        if (userData && userData.name) {
+          setUser(userData);
+          localStorage.setItem("user", JSON.stringify(userData));
+        }
+      }
     }).catch(err => {
       console.warn("Failed to load user in navbar", err);
     });
@@ -131,7 +140,15 @@ const Navbar = () => {
                 }`
               }
             >
-              <CgProfile size={22} />
+              {user?.avatar ? (
+                <img src={user.avatar} alt="Profile" className="w-8 h-8 rounded-full object-cover" />
+              ) : user?.name ? (
+                <div className="w-8 h-8 rounded-full bg-[#006A40] text-white flex items-center justify-center text-sm font-bold uppercase">
+                  {user.name.charAt(0)}
+                </div>
+              ) : (
+                <CgProfile size={22} />
+              )}
               <span>Profile</span>
             </NavLink>
 
@@ -150,7 +167,7 @@ const Navbar = () => {
                     {user?.avatar ? (
                       <img src={user.avatar} alt="Avatar" className="w-14 h-14 rounded-full object-cover" />
                     ) : (
-                      <div className="w-14 h-14 rounded-full bg-white dark:bg-neutral-800/15 flex items-center justify-center text-lg font-bold">
+                      <div className="w-14 h-14 rounded-full bg-white dark:bg-neutral-800/15 flex items-center justify-center text-lg font-bold text-[#006A40]">
                         {user?.name ? user.name.charAt(0).toUpperCase() : "U"}
                       </div>
                     )}

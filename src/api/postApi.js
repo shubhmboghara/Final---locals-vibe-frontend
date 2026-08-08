@@ -102,7 +102,7 @@ export const normalizePost = (p) => {
   if (authorObj && typeof authorObj === "object") {
     userName = authorObj.name || authorObj.email?.split("@")[0] || "Neighbor";
     userAvatar = authorObj.avatar || "";
-    userHandle = authorObj.email ? authorObj.email.split("@")[0] : (authorObj._id || "user");
+    userHandle = authorObj.email ? authorObj.email.split("@")[0] : (userName.toLowerCase().replace(/\s+/g, '') || "neighbor");
     userId = authorObj._id || authorObj.id || "";
   } else if (typeof authorObj === "string") {
     userId = authorObj;
