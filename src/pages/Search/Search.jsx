@@ -222,7 +222,7 @@ export default function Search() {
                   <PostCard 
                     key={item.id} 
                     post={item} 
-                    isOwnPost={currentUser && (
+                    isOwnPost={currentUser && item.type !== "event" && item.type !== "poll" && (
                       item.userId === currentUser._id || 
                       item.userId === currentUser.id ||
                       (item.userObj && (item.userObj._id === currentUser._id || item.userObj.id === currentUser._id)) ||

@@ -225,7 +225,7 @@ const Home = () => {
                   key={post.id || post._id}
                   post={post}
                   showToast={showToast}
-                  isOwnPost={currentUser && (
+                  isOwnPost={currentUser && post.type !== "event" && post.type !== "poll" && (
                     post.userId === currentUser._id || 
                     post.userId === currentUser.id ||
                     (post.userObj && (post.userObj._id === currentUser._id || post.userObj.id === currentUser._id)) ||
