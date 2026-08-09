@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect, useMemo } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { createPost, updatePost } from "../../api/postApi";
 import { createEvent, updateEvent } from "../../api/eventApi";
+import { createPoll } from "../../api/pollApi";
 import { getCurrentUser } from "../../api/userApi";
 import {
   FiArrowLeft,
@@ -1038,6 +1039,14 @@ function Post() {
           await createEvent(formData);
           setPublishedMessage("Event published successfully!");
         }
+      } else if (postType === "poll") {
+        await createPoll({
+          question: activeData.question,
+          options: activeData.options.filter(opt => opt.trim() !== ""),
+          duration: activeData.duration,
+          allowMultipleVotes: activeData.allowMultipleVotes,
+        });
+        setPublishedMessage("Poll published successfully!");
       } else {
         if (editingPost) {
           const mediaToRemove = editingPost.mediaToRemove || [];
