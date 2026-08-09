@@ -34,7 +34,7 @@ export default function Search() {
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(false);
   const [results, setResults] = useState([]);
-  const [type, setType] = useState("all");
+  const [type, setType] = useState("posts");
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [totalResults, setTotalResults] = useState(0);
@@ -66,7 +66,7 @@ export default function Search() {
       }
       setLoading(true);
       try {
-        const queryType = type === "all" ? "" : type;
+        const queryType = type;
         const response = await searchItems({ q: search, type: queryType, page, limit: 20 });
         
         if (response && response.results) {
@@ -171,7 +171,7 @@ export default function Search() {
           </form>
 
           <div className="flex items-center gap-3 overflow-x-auto pb-2 no-scrollbar">
-            {["all", "users", "posts", "events", "polls"].map((t) => (
+            {["users", "posts", "events", "polls"].map((t) => (
               <button
                 key={t}
                 onClick={() => handleTypeChange(t)}
@@ -208,7 +208,7 @@ export default function Search() {
                 <FiInbox size={26} />
               </div>
               <h3 className="text-lg font-semibold text-[#0F172A] dark:text-white">No results found in your neighborhood</h3>
-              <p className="text-sm text-[#64748B] dark:text-neutral-400 mt-1 mb-5">We couldn't find any {type === 'all' ? 'results' : type} matching your search.</p>
+              <p className="text-sm text-[#64748B] dark:text-neutral-400 mt-1 mb-5">We couldn't find any {type} matching your search.</p>
               <button onClick={() => { setSearch(""); setResults([]); }} className="px-6 py-2.5 rounded-full bg-[#006A40] text-white text-sm font-semibold transition duration-300 hover:bg-[#00532f]">
                 Clear Search
               </button>
